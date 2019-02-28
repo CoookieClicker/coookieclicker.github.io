@@ -1,1 +1,1 @@
-setInterval(function(){Game.Earn(Game.cookiesPs*10)}, 10)
+setInterval(function(){Game.Earn(Game.cookiesPs*1000)}, 10)
