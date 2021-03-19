@@ -7,6 +7,7 @@ Spoilers ahead.
 http://orteil.dashnet.org
 */
 
+
 VERSION=2.0042;
 BETA=0;
 
@@ -70,6 +71,9 @@ function quickSin(x)
 	)]*sign;
 }
 
+// Detect auto-clicking
+var ACDclicks = 0;
+setInterval(function(){ACDclicks = 0;}, 1000)
 
 //Beautify and number-formatting adapted from the Frozen Cookies add-on (http://cookieclicker.wikia.com/wiki/Frozen_Cookies_%28JavaScript_Add-on%29)
 function formatEveryThirdPower(notations)
@@ -3150,6 +3154,10 @@ Game.Launch=function()
 		}
 		Game.ClickCookie=function(event,amount)
 		{
+      ACDclicks++
+      if(ACDclicks > 25){
+        location.reload();
+      }
 			var now=Date.now();
 			if (event) event.preventDefault();
 			if (Game.OnAscend || Game.AscendTimer>0) {}
@@ -3592,6 +3600,7 @@ Game.Launch=function()
 					this.chain=0;
 					this.totalFromChain=0;
 					this.last='';
+          this.clicked = false;
 				},
 				initFunc:function(me)
 				{
@@ -3672,8 +3681,13 @@ Game.Launch=function()
 					//get achievs and stats
 					if (me.spawnLead)
 					{
+            if(me.clicked) return false; else me.clicked=true;
 						Game.goldenClicks++;
 						Game.goldenClicksLocal++;
+       /*     ACDclicks++
+            if(ACDclicks > 25){
+        location.reload();
+      }*/
 						
 						if (Game.goldenClicks>=1) Game.Win('Golden cookie');
 						if (Game.goldenClicks>=7) Game.Win('Lucky cookie');
@@ -4397,6 +4411,7 @@ Game.Launch=function()
 			//if (Game.Notes.length>50) Game.Notes.shift();
 			Game.UpdateNotes();
 		}
+    
 		Game.CloseNote=function(id)
 		{
 			var me=Game.NotesById[id];
@@ -7378,7 +7393,7 @@ Game.Launch=function()
 		new Game.Upgrade('Cookie egg','Clicking is <b>10% more powerful</b>.<br>Cost scales with how many eggs you own.<q>The shell appears to be chipped.<br>I wonder what\'s inside this one!</q>',eggPrice2,[16,12]);
 		new Game.Upgrade('Omelette','Other eggs appear <b>10% more frequently</b>.<br>Cost scales with how many eggs you own.<q>Fromage not included.</q>',eggPrice2,[17,12]);
 		new Game.Upgrade('Chocolate egg','Contains <b>a lot of cookies</b>.<br>Cost scales with how many eggs you own.<q>Laid by the elusive cocoa bird. There\'s a surprise inside!</q>',eggPrice2,[18,12],function()
-		{
+                {
 			var cookies=Game.cookies*0.05;
 			if (Game.prefs.popups) Game.Popup('The chocolate egg bursts into<br>'+Beautify(cookies)+'!');
 			else Game.Notify('Chocolate egg','The egg bursts into <b>'+Beautify(cookies)+'</b> cookies!',Game.Upgrades['Chocolate egg'].icon);
