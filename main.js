@@ -3155,8 +3155,8 @@ Game.Launch=function()
 		Game.ClickCookie=function(event,amount)
 		{
       ACDclicks++
-      if(ACDclicks > 25){
-        location.reload();
+      if(ACDclicks > 50){
+        Game.Win("Suspicious clicking")
       }
 			var now=Date.now();
 			if (event) event.preventDefault();
@@ -8750,7 +8750,10 @@ Game.Launch=function()
 		
 		order=1000;
 		new Game.Achievement('The ultimate clickdown','Make <b>1,000,000,000,000,000,000,000</b> cookies from clicking.<q>(of ultimate destiny.)',[11,19]);
-		//end of achievements
+		order=32000;
+    new Game.Achievement('Suspicious clicking','Click the big cookie <i>reaaaaaaaly</i> fast.',[10,6]);Game.last.pool='shadow';
+    
+    //end of achievements
 		
 		/*=====================================================================================
 		BUFFS
